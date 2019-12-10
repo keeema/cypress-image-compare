@@ -57,12 +57,12 @@ Cypress.Commands.add(
         options?: Cypress.ICypressImageMatchOptions
     ): Cypress.Chainable<IResult> => {
         const fullName = getFullTestName(name);
-        const filledOptions: Cypress.ICypressImageMatchOptionsFilled = Object.assign(options || {}, {
+        const filledOptions: Cypress.ICypressImageMatchOptionsFilled = Object.assign({
             failureThreshold: 0,
             _log: Cypress.log({ message: [fullName] }),
             snapshotFolder: Cypress.config("snapshotFolder" as any) || "snapshots",
             diffFolder: Cypress.config("diffFolder" as any) || "cypress/snapshots-diffs",
-        });
+        }, options || {});
 
 
 
@@ -77,7 +77,14 @@ Cypress.Commands.add(
         const subjectImg = $subject[0];
 
         return cy
-            .then(() => subjectImg.src.indexOf("base64") >= 0 ? cy.wrap(subjectImg.src, { log: false }) : loadFromUrl(subjectImg.src, result))
+            .then(() => subjectImg.src.indexOf("base64") >= 0 ? cy.wrap(subjectImg.src, { log: false }) : loadFromUrl(subjectImg.src))
+            .then(dataURL => {
+                return cy
+                    .then(() => (result.found = dataURL))
+                    .then(() => downloadedImageSize(dataURL).then(size => result.dimensions = size))
+                    .wrap(dataURL, { log: false })
+
+            })
             .then(() => filledOptions.update && writeDataUrlToFile(result.templatePath, result.found!))
             .readFile(result.templatePath, "binary")
             .then(content => Cypress.Blob.binaryStringToBlob(content, contentType))
@@ -125,18 +132,11 @@ function getFullTestName(name: string): string {
     }
 }
 
-function loadFromUrl(url: string, result: IResult): Cypress.Chainable<string> {
+function loadFromUrl(url: string): Cypress.Chainable<string> {
     return cy
         .then(() => download(url))
         .then(responseArrayBuffer => Cypress.Blob.arrayBufferToBlob(responseArrayBuffer, contentType))
         .then(blob => Cypress.Blob.blobToDataURL(blob))
-        .then(dataURL => {
-            return cy
-                .then(() => (result.found = dataURL))
-                .then(() => downloadedImageSize(dataURL).then(size => result.dimensions = size))
-                .wrap(dataURL, { log: false })
-
-        })
 }
 function downloadedImageSize(base64: string): PromiseLike<{ width: number, height: number }> {
     const image = new Image();
