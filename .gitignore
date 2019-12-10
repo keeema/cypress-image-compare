@@ -1,0 +1,6 @@
+cypress/snapshots-diffs
+node_modules
+dist
+cypress/snapshots-diffs
+cypress/screenshots
+cypress/videos

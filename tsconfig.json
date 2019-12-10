@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmitHelpers": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": true,
+    "preserveConstEnums": false,
+    "target": "es5",
+    "lib": [
+      "es5",
+      "dom",
+      "es2015.core",
+      "es2015.promise",
+      "es2015.iterable",
+      "es2015.collection"
+    ],
+    "types": ["cypress"],
+    "sourceMap": true,
+    "reactNamespace": "b",
+    "removeComments": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
+  },
+  "include": ["**/*.ts"]
+}
