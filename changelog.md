@@ -4,6 +4,12 @@
 
 ### Change
 
+- fix type references
+
+## [2.0.0] - 2020-02-20
+
+### Change
+
 - upgrade to cypress@4.0.2
 
 ## [1.0.1] - 2019-12-10
