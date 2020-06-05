@@ -16,17 +16,17 @@ interface IPixelMatchOptions {
 }
 
 interface IResult {
-    dimensions: { width: number, height: number },
-    found?: string,
-    foundPath: string,
-    template?: string,
-    templatePath: string,
-    loadedPath: string,
-    diff?: string,
-    diffPath: string,
-    diffPixels?: number,
-    diffPercent?: number
-    match?: boolean
+    dimensions: { width: number; height: number };
+    found?: string;
+    foundPath: string;
+    template?: string;
+    templatePath: string;
+    loadedPath: string;
+    diff?: string;
+    diffPath: string;
+    diffPixels?: number;
+    diffPercent?: number;
+    match?: boolean;
 }
 
 Cypress.Commands.add(
@@ -39,7 +39,7 @@ Cypress.Commands.add(
         height: number,
         options?: IPixelMatchOptions
     ): Cypress.Chainable<number> => {
-        return cy.wrap(Pixelmatch(templateImageData, subjectImageData, diffData, width, height, options), { log: false })
+        return cy.wrap(Pixelmatch(templateImageData, subjectImageData, diffData, width, height, options), { log: false });
     }
 );
 
@@ -47,84 +47,89 @@ const contentType = "image/png";
 Cypress.Commands.add(
     "matchImage",
     {
-        prevSubject: "element"
+        prevSubject: "element",
     },
-    (
-        $subject: JQuery<HTMLImageElement>,
-        name: string,
-        options?: Cypress.ICypressImageMatchOptions
-    ): Cypress.Chainable<IResult> => {
+    ($subject: JQuery<HTMLImageElement>, name: string, options?: Cypress.ICypressImageMatchOptions): Cypress.Chainable<IResult> => {
         const fullName = getFullTestName(name);
-        const filledOptions: Cypress.ICypressImageMatchOptionsFilled = Object.assign({
-            failureThreshold: 0,
-            _log: Cypress.log({ message: [fullName] }),
-            snapshotFolder: Cypress.config("snapshotFolder" as any) || "snapshots",
-            diffFolder: Cypress.config("diffFolder" as any) || "cypress/snapshots-diffs",
-        }, options || {});
-
-
+        const filledOptions: Cypress.ICypressImageMatchOptionsFilled = Object.assign(
+            {
+                failureThreshold: 0,
+                _log: Cypress.log({ message: [fullName] }),
+                snapshotFolder: Cypress.config("snapshotFolder" as any) || "snapshots",
+                diffFolder: Cypress.config("diffFolder" as any) || "cypress/snapshots-diffs",
+            },
+            options || {}
+        );
 
         const result: IResult = {
             dimensions: { width: 0, height: 0 },
             templatePath: `${filledOptions.snapshotFolder}/${fullName}.png`,
             diffPath: `${filledOptions.diffFolder}/${fullName}-diff.png`,
             foundPath: `${filledOptions.diffFolder}/${fullName}-found.png`,
-            loadedPath: `${filledOptions.diffFolder}/${fullName}-loaded.png`
+            loadedPath: `${filledOptions.diffFolder}/${fullName}-loaded.png`,
         };
 
         const subjectImg = $subject[0];
 
         return cy
-            .then(() => subjectImg.src.indexOf("base64") >= 0 ? cy.wrap(subjectImg.src, { log: false }) : loadFromUrl(subjectImg.src))
-            .then(dataURL => {
+            .then(() => (subjectImg.src.indexOf("base64") >= 0 ? cy.wrap(subjectImg.src, { log: false }) : loadFromUrl(subjectImg.src)))
+            .then((dataURL) => {
                 return cy
                     .then(() => (result.found = dataURL))
-                    .then(() => downloadedImageSize(dataURL).then(size => result.dimensions = size))
-                    .wrap(dataURL, { log: false })
-
+                    .then(() => downloadedImageSize(dataURL).then((size) => (result.dimensions = size)))
+                    .wrap(dataURL, { log: false });
             })
             .then(() => filledOptions.update && writeDataUrlToFile(result.templatePath, result.found!))
             .readFile(result.templatePath, "binary")
-            .then(content => Cypress.Blob.binaryStringToBlob(content, contentType))
-            .then(blob => Cypress.Blob.blobToDataURL(blob))
-            .then(templateDataURL => {
-                filledOptions.debug && writeDataUrlToFile(result.loadedPath, templateDataURL)
+            .then((content) => Cypress.Blob.binaryStringToBlob(content, contentType))
+            .then((blob) => Cypress.Blob.blobToDataURL(blob))
+            .then((templateDataURL) => {
+                filledOptions.debug && writeDataUrlToFile(result.loadedPath, templateDataURL);
                 return templateDataURL;
             })
-            .then(templateDataURL => {
-                const templateImageData = getImageData(dataUrlToImage(templateDataURL, result.dimensions))
-                const foundImageData = getImageData(dataUrlToImage(result.found!, result.dimensions))
-                const diffImageOnCanvas = createEmptyImageOnCanvasOfSize(result.dimensions)
+            .then((templateDataURL) => {
+                const templateImageData = getImageData(dataUrlToImage(templateDataURL, result.dimensions));
+                const foundImageData = getImageData(dataUrlToImage(result.found!, result.dimensions));
+                const diffImageOnCanvas = createEmptyImageOnCanvasOfSize(result.dimensions);
                 const diffImageData = diffImageOnCanvas.context.createImageData(result.dimensions.width, result.dimensions.height);
 
                 result.diffPixels = Pixelmatch(
                     templateImageData,
                     foundImageData,
-                    diffImageData.data as Object as Uint8Array,
+                    (diffImageData.data as Object) as Uint8Array,
                     result.dimensions.width,
                     result.dimensions.height,
                     filledOptions
-                )
+                );
 
                 const diffPercent = result.diffPixels / (result.dimensions.width * result.dimensions.height);
                 diffImageOnCanvas.context.putImageData(diffImageData, 0, 0);
                 result.diff = diffImageOnCanvas.canvas.toDataURL("image/png");
                 result.match = diffPercent <= filledOptions.failureThreshold;
                 result.diffPercent = Math.round(diffPercent * 10000) / 100;
-
             })
             .then(() => {
-                (filledOptions.debug || !result.match) && writeDataUrlToFile(result.diffPath, result.diff!) && writeDataUrlToFile(result.foundPath, result.found!)
+                (filledOptions.debug || !result.match) &&
+                    writeDataUrlToFile(result.diffPath, result.diff!) &&
+                    writeDataUrlToFile(result.foundPath, result.found!);
                 filledOptions._log.set({ $el: $subject, consoleProps: () => result });
             })
-            .then(() => expect(result.match, `expect amount of different pixels in ${fullName} to be <= ${filledOptions.failureThreshold * 100}% but it is ${result.diffPercent}%`).to.be.true)
-            .wrap(result, { log: false })
+            .then(
+                () =>
+                    expect(
+                        result.match,
+                        `expect amount of different pixels in ${fullName} to be <= ${filledOptions.failureThreshold * 100}% but it is ${
+                            result.diffPercent
+                        }%`
+                    ).to.be.true
+            )
+            .wrap(result, { log: false });
     }
 );
 
 function getFullTestName(name: string): string {
     try {
-        return `${(Cypress as any).mocha.getRunner().suite.ctx.test.fullTitle()} - ${name}`
+        return `${(Cypress as any).mocha.getRunner().suite.ctx.test.fullTitle()} - ${name}`;
     } catch {
         return name;
     }
@@ -133,33 +138,33 @@ function getFullTestName(name: string): string {
 function loadFromUrl(url: string): Cypress.Chainable<string> {
     return cy
         .then(() => download(url))
-        .then(responseArrayBuffer => Cypress.Blob.arrayBufferToBlob(responseArrayBuffer, contentType))
-        .then(blob => Cypress.Blob.blobToDataURL(blob))
+        .then((responseArrayBuffer) => Cypress.Blob.arrayBufferToBlob(responseArrayBuffer, contentType))
+        .then((blob) => Cypress.Blob.blobToDataURL(blob));
 }
-function downloadedImageSize(base64: string): PromiseLike<{ width: number, height: number }> {
+function downloadedImageSize(base64: string): PromiseLike<{ width: number; height: number }> {
     const image = new Image();
 
-    const promise = new Cypress.Promise<{ width: number, height: number }>(resolve => {
+    const promise = new Cypress.Promise<{ width: number; height: number }>((resolve) => {
         image.onload = () => {
-            resolve({ width: image.width, height: image.height })
+            resolve({ width: image.width, height: image.height });
         };
-    })
+    });
 
     image.src = base64;
     return promise;
 }
 
-function createEmptyImageOnCanvasOfSize(dimensions: { width: number, height: number }): IImageOnCanvas {
+function createEmptyImageOnCanvasOfSize(dimensions: { width: number; height: number }): IImageOnCanvas {
     const canvas = document.createElement("canvas");
     canvas.width = dimensions.width;
     canvas.height = dimensions.height;
     const context = canvas.getContext("2d")!;
-    return { canvas, context }
+    return { canvas, context };
 }
 
 interface IImageOnCanvas {
-    canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
 }
 
 function download(url: string): PromiseLike<ArrayBuffer> {
@@ -167,9 +172,9 @@ function download(url: string): PromiseLike<ArrayBuffer> {
     oReq.open("GET", url, true);
     oReq.responseType = "arraybuffer";
 
-    const promise = new Cypress.Promise<ArrayBuffer>(resolve => {
+    const promise = new Cypress.Promise<ArrayBuffer>((resolve) => {
         oReq.onload = () => {
-            resolve(oReq.response)
+            resolve(oReq.response);
         };
     });
     oReq.send(null);
@@ -177,12 +182,13 @@ function download(url: string): PromiseLike<ArrayBuffer> {
 }
 
 function writeDataUrlToFile(path: string, dataURL: string): Cypress.Chainable<string> {
-    return cy.then(() => Cypress.Blob.dataURLToBlob(dataURL))
-        .then(blob => Cypress.Blob.blobToBinaryString(blob))
-        .then(blobString => cy.writeFile(path, blobString, "binary"))
+    return cy
+        .then(() => Cypress.Blob.dataURLToBlob(dataURL))
+        .then((blob) => Cypress.Blob.blobToBinaryString(blob))
+        .then((blobString) => cy.writeFile(path, blobString, "binary"));
 }
 
-function dataUrlToImage(dataUrl: string, dimensions: { width: number, height: number }): HTMLImageElement {
+function dataUrlToImage(dataUrl: string, dimensions: { width: number; height: number }): HTMLImageElement {
     const image = document.createElement("img");
     image.width = dimensions.width;
     image.height = dimensions.height;
@@ -200,5 +206,5 @@ function getImageData(img: HTMLImageElement): Uint8Array {
     }
 
     ctx.drawImage(img, 0, 0, img.width, img.height);
-    return new Uint8Array(ctx.getImageData(0, 0, img.width, img.height).data)
+    return new Uint8Array(ctx.getImageData(0, 0, img.width, img.height).data);
 }

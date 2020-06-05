@@ -1,27 +1,30 @@
 {
-  "name": "cypress-image-compare",
-  "version": "2.0.1",
-  "description": "",
-  "main": "index",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "keeema",
-  "license": "MIT",
-  "prettier": {
-    "printWidth": 140,
-    "tabWidth": 4,
-    "parser": "typescript"
-  },
-  "dependencies": {
-    "@types/pixelmatch": "^5.0.0",
-    "cypress": "^4.0.2",
-    "pixelmatch": "^5.1.0"
-  },
-  "devDependencies": {
-    "@cypress/webpack-preprocessor": "^4.1.1",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.3",
-    "webpack": "^4.41.2"
-  }
+    "name": "cypress-image-compare",
+    "version": "2.1.0",
+    "description": "",
+    "main": "index",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "keeema",
+    "license": "MIT",
+    "prettier": {
+        "printWidth": 140,
+        "tabWidth": 4
+    },
+    "dependencies": {
+        "@types/pixelmatch": "^5.0.0",
+        "cypress": "^4.7.0",
+        "pixelmatch": "^5.1.0"
+    },
+    "devDependencies": {"@cypress/webpack-preprocessor": "^5.4.1",
+        "@typescript-eslint/eslint-plugin": "*",
+        "@typescript-eslint/parser": "*",
+        "eslint": "*",
+        "eslint-config-bobril": "*",
+        "prettier": "*",
+        "ts-loader": "^7.0.5",
+        "typescript": "^3.9.3",
+        "webpack": "^4.43.0"
+    }
 }
