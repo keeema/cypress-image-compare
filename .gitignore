@@ -4,4 +4,3 @@ dist
 cypress/snapshots-diffs
 cypress/screenshots
 cypress/videos
-yarn.lock
