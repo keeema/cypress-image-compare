@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.0] - 2020-08-28
+
+### Change
+
+-   Update cypress@5.0.0 and typescript@4.0.2
+
 ## [2.1.1] - 2020-06-08
 
 -   Fix dependencies

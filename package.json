@@ -1,6 +1,6 @@
 {
     "name": "cypress-image-compare",
-    "version": "2.1.1",
+    "version": "3.0.0",
     "description": "",
     "main": "index",
     "scripts": {
@@ -14,18 +14,18 @@
     },
     "dependencies": {
         "@types/pixelmatch": "^5.0.0",
-        "cypress": "^4.3.0",
+        "cypress": "^5.0.0",
         "pixelmatch": "^5.1.0"
     },
     "devDependencies": {
-        "@cypress/webpack-preprocessor": "^5.4.1",
+        "@cypress/webpack-preprocessor": "^5.4.5",
         "@typescript-eslint/eslint-plugin": "^2.0.0",
         "@typescript-eslint/parser": "^2.0.0",
         "eslint": "^6.0.0",
         "eslint-config-bobril": "*",
         "prettier": "2.0.2",
-        "ts-loader": "^7.0.5",
-        "typescript": "^3.9.3",
-        "webpack": "^4.43.0"
+        "ts-loader": "^8.0.3",
+        "typescript": "^4.0.2",
+        "webpack": "^4.44.1"
     }
 }

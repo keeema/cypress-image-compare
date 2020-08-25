@@ -7,15 +7,7 @@ function register(on: Cypress.PluginEvents): void {
         webpackOptions: cfg,
         watchOptions: {},
     };
-    on("file:preprocessor", getWebpackWithFileChange(options));
-}
-
-function getWebpackWithFileChange(options: object): (file: any) => string | Promise<string> {
-    const webPackPreProcessor = webpackPreprocessor(options);
-    return function (file) {
-        file.outputPath = file.outputPath.replace(".ts", ".js");
-        return webPackPreProcessor(file);
-    };
+    on("file:preprocessor", webpackPreprocessor(options as any) as (file: unknown) => string | Promise<string>);
 }
 
 export = register;

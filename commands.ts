@@ -81,8 +81,10 @@ Cypress.Commands.add(
             })
             .then(() => filledOptions.update && writeDataUrlToFile(result.templatePath, result.found!))
             .readFile(result.templatePath, "binary")
-            .then((content) => Cypress.Blob.binaryStringToBlob(content, contentType))
-            .then((blob) => Cypress.Blob.blobToDataURL(blob))
+            .then((content) => {
+                const blob = Cypress.Blob.binaryStringToBlob(content, contentType);
+                return Cypress.Blob.blobToDataURL(blob);
+            })
             .then((templateDataURL) => {
                 filledOptions.debug && writeDataUrlToFile(result.loadedPath, templateDataURL);
                 return templateDataURL;
@@ -138,8 +140,10 @@ function getFullTestName(name: string): string {
 function loadFromUrl(url: string): Cypress.Chainable<string> {
     return cy
         .then(() => download(url))
-        .then((responseArrayBuffer) => Cypress.Blob.arrayBufferToBlob(responseArrayBuffer, contentType))
-        .then((blob) => Cypress.Blob.blobToDataURL(blob));
+        .then((responseArrayBuffer) => {
+            const blob = Cypress.Blob.arrayBufferToBlob(responseArrayBuffer, contentType);
+            return Cypress.Blob.blobToDataURL(blob);
+        });
 }
 function downloadedImageSize(base64: string): PromiseLike<{ width: number; height: number }> {
     const image = new Image();
