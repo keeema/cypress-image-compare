@@ -1,6 +1,6 @@
 {
     "name": "cypress-image-compare",
-    "version": "4.0.0",
+    "version": "5.0.0",
     "description": "",
     "main": "index",
     "scripts": {
@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@types/pixelmatch": "^5.0.0",
-        "cypress": "^6.0.0",
+        "cypress": "^7.0.0",
         "pixelmatch": "^5.1.0"
     },
     "devDependencies": {
