@@ -1,7 +1,98 @@
 {
-    "extends": "eslint-config-bobril",
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "tsconfig.json",
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": ["@typescript-eslint"],
     "rules": {
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/naming-convention": [
+            "warn",
+            {
+                "selector": "default",
+                "format": ["camelCase"]
+            },
+            {
+                "selector": "variable",
+                "modifiers": ["const", "global"],
+                "format": ["camelCase", "PascalCase"] // allow PascalCase for component names
+            },
+            {
+                "selector": "parameter",
+                "format": ["camelCase"],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "memberLike",
+                "modifiers": ["private"],
+                "format": ["camelCase"],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "enumMember",
+                "format": ["PascalCase"]
+            },
+            {
+                "selector": "typeLike",
+                "format": ["PascalCase"]
+            },
+            {
+                "selector": "interface",
+                "format": ["PascalCase"],
+                "prefix": ["I"]
+            }
+        ],
+        "@typescript-eslint/member-ordering": "warn",
+        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-floating-promises": "warn",
+        "@typescript-eslint/no-parameter-properties": "warn",
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/explicit-function-return-type": [
+            "warn",
+            {
+                "allowExpressions": true
+            }
+        ],
+        "curly": "warn",
+        "dot-notation": "off",
+        "eol-last": "off",
+        "guard-for-in": "off",
+        "id-blacklist": "warn",
+        "id-match": "warn",
+        "no-bitwise": "off",
+        "no-caller": "warn",
+        "eqeqeq": ["warn", "always"],
+        "no-debugger": "warn",
+        "no-empty": "warn",
+        "no-eval": "warn",
+        "no-fallthrough": "warn",
+        "no-new-wrappers": "warn",
+        "no-redeclare": "off", // note you must disable the base rule as it can report incorrect errors (e.g. on multi-signature functions)
+        "@typescript-eslint/no-redeclare": ["error"],
+        "no-shadow": "off", // note you must disable the base rule as it can report incorrect errors (e.g. on enums)
+        "@typescript-eslint/no-shadow": [
+            "warn",
+            {
+                "hoist": "all"
+            }
+        ],
+        "no-underscore-dangle": "off",
+        "no-unused-expressions": "off",
+        "no-unused-labels": "warn",
+        "no-var": "warn",
+        "prefer-const": "warn",
+        "radix": "warn",
+        "spaced-comment": ["warn", "always", { "markers": ["/"] }],
         "no-console": "off"
     }
 }

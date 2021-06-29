@@ -1,6 +1,11 @@
 /// <reference types="cypress" />
 
 declare namespace Cypress {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    interface ResolvedConfigOptions {
+        snapshotFolder: string;
+        diffFolder: string;
+    }
     interface IPixelMatchOptions {
         /** Matching threshold, ranges from 0 to 1. Smaller values make the comparison more sensitive. 0.1 by default. */
         threshold?: number;
@@ -15,8 +20,8 @@ declare namespace Cypress {
     }
 
     interface ICypressImageMatchOptions extends IPixelMatchOptions {
-        update?: boolean,
-        debug?: true,
+        update?: boolean;
+        debug?: true;
         failureThreshold?: number;
         snapshotFolder?: string;
         diffFolder?: string;
@@ -32,11 +37,13 @@ declare namespace Cypress {
     interface Chainable<Subject> {
         matchImage(name: string, options?: ICypressImageMatchOptions): Chainable<IResult>;
 
-        pixelMatch(subjectImageData: Uint8Array,
+        pixelMatch(
+            subjectImageData: Uint8Array,
             templateImageData: Uint8Array,
             diffData: Uint8Array,
             width: number,
             height: number,
-            options?: IPixelMatchOptions): Chainable<number>;
+            options?: IPixelMatchOptions
+        ): Chainable<number>;
     }
 }

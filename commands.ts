@@ -54,9 +54,10 @@ Cypress.Commands.add(
         const filledOptions: Cypress.ICypressImageMatchOptionsFilled = Object.assign(
             {
                 failureThreshold: 0,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 _log: Cypress.log({ message: [fullName] }),
-                snapshotFolder: Cypress.config("snapshotFolder" as any) || "snapshots",
-                diffFolder: Cypress.config("diffFolder" as any) || "cypress/snapshots-diffs",
+                snapshotFolder: Cypress.config("snapshotFolder") || "snapshots",
+                diffFolder: Cypress.config("diffFolder") || "cypress/snapshots-diffs",
             },
             options || {}
         );
@@ -98,7 +99,7 @@ Cypress.Commands.add(
                 result.diffPixels = Pixelmatch(
                     templateImageData,
                     foundImageData,
-                    (diffImageData.data as Object) as Uint8Array,
+                    diffImageData.data as Object as Uint8Array,
                     result.dimensions.width,
                     result.dimensions.height,
                     filledOptions
@@ -131,7 +132,7 @@ Cypress.Commands.add(
 
 function getFullTestName(name: string): string {
     try {
-        return `${(Cypress as any).mocha.getRunner().suite.ctx.test.fullTitle()} - ${name}`;
+        return `${(Cypress as Object as { mocha: { getRunner: Function } }).mocha.getRunner().suite.ctx.test.fullTitle()} - ${name}`;
     } catch {
         return name;
     }

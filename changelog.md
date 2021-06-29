@@ -1,4 +1,11 @@
 # Changelog
+
+## [5.1.0] - 2021-06-29
+
+-   Define config parameters properly
+-   Update pixelmatch@5.2.1
+-   Removed bobril configuration of eslint
+
 ## [5.0.0] - 2021-03-05
 
 ### Change
