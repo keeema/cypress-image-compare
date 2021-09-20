@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.1.1] - 2021-09-20
+
+-   Add cypress@^8.0.1
+
 ## [5.1.0] - 2021-06-29
 
 -   Define config parameters properly

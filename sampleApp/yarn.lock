@@ -3,6 +3,6 @@
 
 
 bobril@*:
-  version "14.17.0"
-  resolved "https://registry.yarnpkg.com/bobril/-/bobril-14.17.0.tgz#c975a32f8dba5a771607d34a59acd65c50385630"
-  integrity sha512-GN1wY1CpwSSqlWG5jsB73TypwFenECksRsGQGsU/Ir0lhwO6we1QbFlSmovjxODvWi1YRDO0EOPP+9bBWpxuoA==
+  version "17.11.0"
+  resolved "https://registry.yarnpkg.com/bobril/-/bobril-17.11.0.tgz#91b981313d081f99b113c63ca2e5a33ec2180407"
+  integrity sha512-C8LpsbRB1tMpaZIw9txAdtEU53VEO/IMyZvrfiaIDJI9hE6cyk5ntCSIVPOA8L9vROraXCEBzL2oc37WIlUHkA==
