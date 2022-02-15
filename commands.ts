@@ -49,7 +49,7 @@ Cypress.Commands.add(
     {
         prevSubject: "element",
     },
-    ($subject: JQuery<HTMLImageElement>, name: string, options?: Cypress.ICypressImageMatchOptions): Cypress.Chainable<IResult> => {
+    ($subject: JQuery<HTMLElement>, name: string, options?: Cypress.ICypressImageMatchOptions): Cypress.Chainable<IResult> => {
         const fullName = getFullTestName(name);
         const filledOptions: Cypress.ICypressImageMatchOptionsFilled = Object.assign(
             {
@@ -70,7 +70,7 @@ Cypress.Commands.add(
             loadedPath: `${filledOptions.diffFolder}/${fullName}-loaded.png`,
         };
 
-        const subjectImg = $subject[0];
+        const subjectImg = $subject[0] as HTMLImageElement;
 
         return cy
             .then(() => (subjectImg.src.indexOf("base64") >= 0 ? cy.wrap(subjectImg.src, { log: false }) : loadFromUrl(subjectImg.src)))
@@ -186,7 +186,7 @@ function download(url: string): PromiseLike<ArrayBuffer> {
     return promise;
 }
 
-function writeDataUrlToFile(path: string, dataURL: string): Cypress.Chainable<string> {
+function writeDataUrlToFile(path: string, dataURL: string): Cypress.Chainable<null> {
     return cy
         .then(() => Cypress.Blob.dataURLToBlob(dataURL))
         .then((blob) => Cypress.Blob.blobToBinaryString(blob))
