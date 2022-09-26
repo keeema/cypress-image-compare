@@ -1,7 +1,13 @@
 # Changelog
+
+## [5.3.0] - 2020-09-23
+
+-   Upgrade cypress@^10.8.0
+
 ## [5.2.0] - 2020-02-15
 
 -   Updated cypress@^9.2.0
+
 ## [5.1.1] - 2021-09-20
 
 -   Add cypress@^8.0.1
