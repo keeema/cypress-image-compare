@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.5.0] - 2023-07-13
+
+-   Upgrade cypress@^12.17.1
+
 ## [5.4.0] - 2023-05-02
 
 -   Upgrade cypress@^12.11.0
